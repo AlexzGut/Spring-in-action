@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yummy Cakes</title>
+</head>
+<body>
+    <h1>Create your Cake</h1>
+
+    <form method="POST" th:object="${cake}">
+        <div>
+            <div id="flavors">
+                <h3>Cake Flavor</h3>
+                <div th:each="ingredient : ${flavors}">
+                    <!--th:each is a Thymeleaf namespace attribute  that iterates over a collection of elements -->
+                    <input name="toppings" type="checkbox" th:value="${ingredient.id}"/>
+                    <span th:text="${ingredient.name}"></span>
+                    <!--th:text is a Thymeleaf namespace attribute that replace the text of the element with a servlet request attribute -->
+                    <!-- the operator ${} tells it to use the value of a servlet request attribute -->
+                </div>
+            </div>
+            <div id="additions">
+                <h3>Cake Additions</h3>
+                <div th:each="ingredient : ${additions}">
+                    <input name="toppings" type="checkbox" th:value="${ingredient.id}"/>
+                    <span th:text="${ingredient.name}"></span>
+                </div>
+            </div>
+
+            <div>
+                <h3>Name your Cake</h3>
+                <input type="text" name="name"/>
+
+                <button>Submit</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
