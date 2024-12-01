@@ -1,12 +1,11 @@
 package tacos.controllers;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Arrays;
@@ -57,6 +56,20 @@ public class CreateCakeController {
     @GetMapping // when an HTTP GET request is received for /create, Spring MVC will call this method.
     public String displayCreateCakeForm() {
         return "create_cake";
+    }
+
+    @PostMapping
+    // CakeOrder object is explicitly annotated with @ModelAttribute because it is not the primary form object bound to the request
+    // Note: For complex objects like Cake, Spring teats them as @ModelAttribute
+    public String processCake(@Valid Cake cake, Errors errors, @ModelAttribute CakeOrder cakeOrder) {
+        if (errors.hasErrors()) {
+            log.error("Errors: {}", errors.getAllErrors());
+            return "create_cake";
+        }
+        cakeOrder.addCake(cake);
+        log.info("Processing cake: {}", cake);
+
+        return "redirect:/orders/current";
     }
 
     private List<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {

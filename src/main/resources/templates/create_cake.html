@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns="http:/ /www.w3.org/1999/xhtml"
+      xmlns:th="http:/ /www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Yummy Cakes</title>
@@ -13,7 +15,7 @@
                 <h3>Cake Flavor</h3>
                 <div th:each="ingredient : ${flavors}">
                     <!--th:each is a Thymeleaf namespace attribute  that iterates over a collection of elements -->
-                    <input name="toppings" type="checkbox" th:value="${ingredient.id}"/>
+                    <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}"/>
                     <span th:text="${ingredient.name}"></span>
                     <!--th:text is a Thymeleaf namespace attribute that replace the text of the element with a servlet request attribute -->
                     <!-- the operator ${} tells it to use the value of a servlet request attribute -->
@@ -22,14 +24,17 @@
             <div id="additions">
                 <h3>Cake Additions</h3>
                 <div th:each="ingredient : ${additions}">
-                    <input name="toppings" type="checkbox" th:value="${ingredient.id}"/>
+                    <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}"/>
                     <span th:text="${ingredient.name}"></span>
                 </div>
             </div>
+            <span class="validationErrors" th:if="#{fields.hasErrors('ingredients')}" th:errors="*{ingredients}"></span>
 
             <div>
                 <h3>Name your Cake</h3>
                 <input type="text" name="name"/>
+                <span class="validationErrors" th:if="#{fields.hasErrors('name')}" th:errors="*{name}"></span>
+                <br>
 
                 <button>Submit</button>
             </div>
