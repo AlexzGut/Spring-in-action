@@ -1,25 +1,36 @@
-package tacos.controllers;
+package tacos.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Map;
 
-import tacos.models.Cake;
-import tacos.models.CakeOrder;
-import tacos.models.Ingredient.Type;
-import tacos.models.Ingredient;
+import tacos.model.Cake;
+import tacos.model.CakeOrder;
+import tacos.model.Ingredient.Type;
+import tacos.model.Ingredient;
+import tacos.repository.IngredientRepository;
 
 @Slf4j // This annotation generate a (Simple Logging Facade for Java) Logger static property in the class.
 @Controller
 @RequestMapping("/create")
 @SessionAttributes("cakeOrder") // indicates that the CakeOrder object added to the model by the cakeOrder method should be maintained in session.
 public class CreateCakeController {
+
+    private final IngredientRepository ingredientRepository;
+
+    @Autowired
+    public CreateCakeController(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
+    }
 
     // The methods annotated with @ModelAttribute are executed before any handler methods like (GetMapping or PostMapping) are invoked
     // This functionality ensures attributes are added to the model and available to the views or other controller methods
@@ -29,15 +40,17 @@ public class CreateCakeController {
     // in the parent controller are executed first.
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = Arrays.asList(
-          new Ingredient("PIAP", "Pineapple", Type.FLAVORS),
-          new Ingredient("CHCH", "Chocolate Chips", Type.ADDITIONS)
-        );
+        Map<String, List<Ingredient>> ingredientsByType = new HashMap<>();
+
+        List<Ingredient> ingredients = (List<Ingredient>) ingredientRepository.findAll();
 
         Type[] types = Type.values();
         for (Type type : types) {
-            model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
+            ingredientsByType.put(type.toString().toLowerCase(), filterByType(ingredients, type));
         }
+
+        // A model containing <Type, List of Ingredients>, which is used to dynamically generate a form so the user can select the ingredients of the cake.
+        model.addAttribute("ingredientsByType", ingredientsByType);
     }
 
     // this annotation is used in Spring MVC to indicate that

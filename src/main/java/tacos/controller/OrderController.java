@@ -1,4 +1,4 @@
-package tacos.controllers;
+package tacos.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import tacos.models.CakeOrder;
+import tacos.model.CakeOrder;
 
 import java.util.ArrayList;
 import java.util.List;

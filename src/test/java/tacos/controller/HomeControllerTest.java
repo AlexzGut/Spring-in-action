@@ -1,4 +1,4 @@
-package tacos.controllers;
+package tacos.controller;
 
 
 import static org.hamcrest.Matchers.containsString;

@@ -1,4 +1,4 @@
-package tacos.models;
+package tacos.model;
 
 import lombok.Data;
 
@@ -10,6 +10,6 @@ public class Ingredient {
     private final Type type;
 
     public enum Type {
-        ADDITIONS, FLAVORS, SIZES
+        ADD_ONS, FLAVORS, SIZES, TOPPINGS
     }
 }

@@ -1,4 +1,4 @@
-package tacos.models;
+package tacos.model;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
@@ -7,10 +7,17 @@ import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
 public class CakeOrder {
+
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+
+    private Date placedAt;
 
     @NotBlank(message = "Delivery Name is required")
     private String deliveryName;

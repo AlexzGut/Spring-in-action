@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: taco-cloud
+
+  #disable template caching
+  thymeleaf:
+    cache: false
+  datasource:
+    generate-unique-name: false
+    name: cakecloud
